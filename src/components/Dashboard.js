@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Button } from "react-bootstrap";
-import { FaThermometerHalf, FaTint, FaUserSecret, FaSmog } from 'react-icons/fa';
+import {
+  FaThermometerHalf,
+  FaTint,
+  FaUserSecret,
+  FaSmog,
+} from "react-icons/fa";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -184,28 +189,23 @@ function Dashboard() {
                 <FaTint className="text-info fs-4" />
                 Water Level
               </Card.Title>
-              <Card.Text
-                className="display-5 fw-bold mb-3"
-                style={{
-                  color: sensorData.waterLevel < 20 ? "#dc3545" : "#198754",
-                }}
-              >
+
+              <div className="bottle-wrapper mx-auto mb-3">
+                <div className="bottle">
+                  <div
+                    className="water"
+                    style={{
+                      height: `${sensorData.waterLevel}%`,
+                      backgroundColor: "#0d6efd", // Bootstrap primary blue
+                    }}
+                  ></div>
+                </div>
+              </div>
+
+              <Card.Text className="fw-bold">
                 {sensorData.waterLevel.toFixed(1)}%
               </Card.Text>
-              <div className="progress rounded-pill" style={{ height: "12px" }}>
-                <div
-                  className="progress-bar"
-                  role="progressbar"
-                  style={{
-                    width: `${sensorData.waterLevel}%`,
-                    backgroundColor:
-                      sensorData.waterLevel < 20 ? "#dc3545" : "#198754",
-                  }}
-                  aria-valuenow={sensorData.waterLevel}
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
+
               {sensorData.waterLevel < 20 && (
                 <div className="mt-2 text-danger small">⚠️ Low Water Level</div>
               )}
@@ -221,34 +221,64 @@ function Dashboard() {
                 <FaSmog className="text-primary fs-4" />
                 Misting Status
               </Card.Title>
-              <Card.Text className="display-6 fw-semibold d-flex justify-content-center align-items-center gap-2 mb-3">
+
+              <Card.Text className="display-6 fw-semibold d-flex justify-content-center align-items-center gap-2 mb-4">
                 <span
-                  className={`rounded-circle`}
+                  className="rounded-circle"
                   style={{
                     width: "14px",
                     height: "14px",
                     backgroundColor:
-                      sensorData.mistingStatus === "ON" ? "#198754" : "#dc3545",
+                      sensorData.mistingStatus === "ON"
+                        ? "#198754"
+                        : sensorData.mistingStatus === "AUTO"
+                        ? "#0d6efd"
+                        : sensorData.mistingStatus === "CONTINUOUS"
+                        ? "#fd7e14"
+                        : "#dc3545",
                   }}
                 ></span>
                 {sensorData.mistingStatus}
               </Card.Text>
 
-              <div className="d-flex flex-column flex-md-row justify-content-center gap-3">
-                <Button
-                  variant="primary"
-                  onClick={() => handleMistingControl("ON")}
-                  disabled={sensorData.mistingStatus === "ON"}
-                >
-                  Turn ON
-                </Button>
-                <Button
-                  variant="outline-danger"
-                  onClick={() => handleMistingControl("OFF")}
-                  disabled={sensorData.mistingStatus === "OFF"}
-                >
-                  Turn OFF
-                </Button>
+              {/* Responsive Button Layout */}
+              <div className="row row-cols-2 row-cols-md-2 g-3 px-4">
+                <div className="col d-grid">
+                  <Button
+                    variant="primary"
+                    onClick={() => handleMistingControl("ON")}
+                    disabled={sensorData.mistingStatus === "ON"}
+                  >
+                    Turn ON
+                  </Button>
+                </div>
+                <div className="col d-grid">
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => handleMistingControl("OFF")}
+                    disabled={sensorData.mistingStatus === "OFF"}
+                  >
+                    Turn OFF
+                  </Button>
+                </div>
+                <div className="col d-grid">
+                  <Button
+                    variant="info"
+                    onClick={() => handleMistingControl("AUTO")}
+                    disabled={sensorData.mistingStatus === "AUTO"}
+                  >
+                    Auto
+                  </Button>
+                </div>
+                <div className="col d-grid">
+                  <Button
+                    variant="warning"
+                    onClick={() => handleMistingControl("CONTINUOUS")}
+                    disabled={sensorData.mistingStatus === "CONTINUOUS"}
+                  >
+                    Continuous
+                  </Button>
+                </div>
               </div>
             </Card.Body>
           </Card>
