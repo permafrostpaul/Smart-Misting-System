@@ -1,0 +1,15 @@
+directories:
+  output: dist
+  buildResources: assets
+files:
+  - filter:
+      - build/**/*
+      - build/**/*
+      - node_modules/**/*
+extraMetadata:
+  main: build/main.js
+appId: com.smartmisting.app
+win:
+  icon: src/assets/smart-misting-logo.ico
+extends: react-cra
+electronVersion: 24.8.8
